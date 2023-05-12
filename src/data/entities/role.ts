@@ -22,14 +22,6 @@ export class Role extends Model<IRole> {
     unique: true,
   })
   name!: string;
-
-  @Column({
-    type: DataType.STRING(128),
-    allowNull: false,
-    unique: true,
-  })
-  slug!: string;
-
   // relationships
   @HasMany(() => User)
   users!: User[];

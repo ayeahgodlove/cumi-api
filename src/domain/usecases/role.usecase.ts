@@ -28,7 +28,6 @@ export class RoleUseCase {
   async updateRole(role: IRole): Promise<Role> {
     const obj: IRole = {
       ...role,
-      updatedAt: new Date(),
     };
     return this.roleRepository.update(obj);
   }
