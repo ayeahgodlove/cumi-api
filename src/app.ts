@@ -16,6 +16,10 @@ import Passport from "./shared/middlewares/authz.middleware";
 import userRouter from "./presentation/routes/user.route";
 import { store } from "./shared/helper/redis.config";
 import RedisStore from "connect-redis";
+import documentRouter from "./presentation/routes/document.route";
+import commentRouter from "./presentation/routes/comment.route";
+import tagRouter from "./presentation/routes/tag.route";
+import postRouter from "./presentation/routes/post.route";
 
 dotenv.config();
 /**
@@ -83,7 +87,11 @@ app.get("/api", (req: Request, res: Response) => {
 
 app.use("/api/categories", categoryRouter);
 app.use("/api/roles", roleRouter);
-app.use("/api/users", userRouter)
+app.use("/api/users", userRouter);
+app.use("/api/documents", documentRouter);
+app.use("/api/comments", commentRouter);
+app.use("/api/tags", tagRouter);
+app.use("/api/posts", postRouter);
 
 // middleware interceptions
 app.use(errorHandler);

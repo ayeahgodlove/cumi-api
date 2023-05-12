@@ -1,22 +1,14 @@
 // src/presentation/dtos/post-request.dto.ts
 
-import {  IsNotEmpty, IsString, Length, Min } from "class-validator";
+import {  IsNotEmpty, IsString, Length } from "class-validator";
 import { IPost, emptyPost } from "../../domain/models/post";
 import slugify from "slugify";
 import { nanoid } from "nanoid";
 
-// id: string; //primary key
-// title: string;
-// content: string;
-// imageUrl: string;
-// slug: string;
-// publishedAt: Date;
-// authorId: string; //foreign key to user table
-// categoryId: string; //foreign key to user table
 export class PostRequestDto {
   @IsNotEmpty()
   @IsString()
-  @Min(10)
+  @Length(10, 128)
   title: string;
 
   @IsNotEmpty()

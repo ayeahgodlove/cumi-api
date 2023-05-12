@@ -14,9 +14,6 @@ export class PostUseCase {
     if (existingPost) {
       throw new Error("Post already exists");
     }
-
-    // const _post = new Post({post});
-    //because it's already done in the Repository
     return this.postRepository.create(post);
   }
 
