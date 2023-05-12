@@ -5,7 +5,6 @@ export interface IComment {
   content: string;
   userId: string; //foreign key to user table
   postId: string; //foreign key to post table
-  articleId: string; //foreign key to article table
   publishedAt: Date;
 }
 
@@ -14,7 +13,6 @@ export const emptyComment: IComment = {
   content: "",
   userId: "",
   postId: "",
-  articleId: "",
   publishedAt: new Date(),
 };
 
