@@ -10,7 +10,6 @@ import { errorHandler } from "./shared/middlewares/error.middleware";
 import { notFoundHandler } from "./shared/middlewares/not-found.middleware";
 import categoryRouter from "./presentation/routes/category.route";
 import roleRouter from "./presentation/routes/role.route";
-import reviewRouter from "./presentation/routes/review.route";
 import { authRoutes } from "./presentation/routes/auth/auth.route";
 
 import Passport from "./shared/middlewares/authz.middleware";
@@ -84,7 +83,6 @@ app.get("/api", (req: Request, res: Response) => {
 
 app.use("/api/categories", categoryRouter);
 app.use("/api/roles", roleRouter);
-app.use("/api/reviews", reviewRouter);
 app.use("/api/users", userRouter)
 
 // middleware interceptions
