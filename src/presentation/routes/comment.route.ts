@@ -7,9 +7,9 @@ const commentController = new CommentsController();
 
 const commentRouter = Router();
 
-commentRouter.get("", isAuthenticatedMiddleware, commentController.getAll);
-commentRouter.get("/:id", isAuthenticatedMiddleware, commentController.getCommentById);
-commentRouter.post("", isAuthenticatedMiddleware, commentController.createComment);
+commentRouter.get("/:postId", isAuthenticatedMiddleware, commentController.getPostComments);
+// commentRouter.get("/:id", isAuthenticatedMiddleware, commentController.getCommentById);
+commentRouter.post("/", isAuthenticatedMiddleware, commentController.createComment); //create comment
 commentRouter.put("/:id", isAuthenticatedMiddleware, commentController.updateComment);
 commentRouter.delete("/:id", isAuthenticatedMiddleware, commentController.deleteComment);
 

@@ -9,13 +9,21 @@ import { User } from "../../entities/user";
 import { IDocument } from "../../../domain/models/document";
 import { DocumentFile } from "../../entities/document";
 import { Tag } from "../../entities/tag";
+import { Comment } from "../../entities/comment";
 import { ITag } from "../../../domain/models/tag";
+import { IComment } from "../../../domain/models/comment";
 
 export interface IRepository<T, U> {
   create(category: T): Promise<U>;
   findById(id: string): Promise<U | null>;
   getAll(): Promise<U[]>;
   update(category: T): Promise<U>;
+  delete(id: string): Promise<void>;
+}
+export interface ICommentRepository {
+  create(category: IComment): Promise<Comment>;
+  getPostComments(postId: string): Promise<Comment[]>;
+  update(category: IComment): Promise<Comment>;
   delete(id: string): Promise<void>;
 }
 export interface IPostRepository extends IRepository<IPost, Post> {

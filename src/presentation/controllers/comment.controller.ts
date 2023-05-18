@@ -57,80 +57,14 @@ export class CommentsController {
     }
   }
 
-  async replyComment(
-    req: Request,
-    res: Response<ICommentResponse>
-  ): Promise<void> {
-    const dto = new CommentRequestDto(req.body);
-    const user = req.user as User;
-    const validationErrors = await validate(dto);
-
-    if (validationErrors.length > 0) {
-      res.status(400).json({
-        validationErrors: displayValidationErrors(validationErrors) as any,
-        success: false,
-        data: null,
-        message: "Attention!",
-      });
-    } else {
-      try {
-        const commentResponse = await commentUseCase.createComment({
-          ...dto.toData(),
-          userId: user.id,
-        });
-
-        res.status(201).json({
-          data: commentResponse.toJSON<IComment>(),
-          message: "Comment Replied Successfully!",
-          validationErrors: [],
-          success: true,
-        });
-      } catch (error: any) {
-        res.status(400).json({
-          data: null,
-          message: error.message,
-          validationErrors: [],
-          success: false,
-        });
-      }
-    }
-  }
-
-  async getAll(req: Request, res: Response<any>): Promise<void> {
+  async getPostComments(req: Request, res: Response<any>): Promise<void> {
+    const { postId } = req.params;
     try {
-      const comments = await commentUseCase.getAll();
+      const comments = await commentUseCase.getPostComments(postId);
       const commentsDTO = commentMapper.toDTOs(comments);
 
       res.json({
         data: commentsDTO,
-        message: "Success",
-        validationErrors: [],
-        success: true,
-      });
-    } catch (error: any) {
-      res.status(400).json({
-        data: null,
-        message: error.message,
-        validationErrors: [error],
-        success: false,
-      });
-    }
-  }
-
-  async getCommentById(
-    req: Request,
-    res: Response<ICommentResponse>
-  ): Promise<void> {
-    try {
-      const id = req.params.id;
-
-      const comment = await commentUseCase.getCommentById(id);
-      if (!comment) {
-        throw new NotFoundException("Comment", id);
-      }
-      const commentDTO = commentMapper.toDTO(comment);
-      res.json({
-        data: commentDTO,
         message: "Success",
         validationErrors: [],
         success: true,
@@ -161,12 +95,14 @@ export class CommentsController {
       });
     } else {
       try {
-        const id = req.params.id;
+        const { id } = req.params;
+        const user = req.user as User;
 
         const obj: IComment = {
           ...emptyComment,
           ...req.body,
           id,
+          userId: user.id
         };
         const updatedComment = await commentUseCase.updateComment(
           dto.toUpdateData(obj)
@@ -195,7 +131,7 @@ export class CommentsController {
     res: Response<ICommentResponse>
   ): Promise<void> {
     try {
-      const id = req.params.id;
+      const { id } = req.params;
 
       await commentUseCase.deleteComment(id);
 

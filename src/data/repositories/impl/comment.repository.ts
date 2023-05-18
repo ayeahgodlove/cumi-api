@@ -1,9 +1,11 @@
 import { Comment } from "../../entities/comment";
 import { IComment } from "../../../domain/models/comment";
 import { NotFoundException } from "../../../shared/exceptions/not-found.exception";
-import { IRepository } from "../contracts/repository.base";
+import { ICommentRepository } from "../contracts/repository.base";
+import { Post } from "../../entities/post";
+import { User } from "../../entities/user";
 
-export class CommentRepository implements IRepository<IComment, Comment> {
+export class CommentRepository implements ICommentRepository {
   /**
    *
    */
@@ -21,32 +23,36 @@ export class CommentRepository implements IRepository<IComment, Comment> {
       throw error;
     }
   }
-
-  /**
-   * Receives a String as parameter
-   * @id
-   * returns Comment
-   */
-  async findById(id: string): Promise<Comment | null> {
-    try {
-      const commentItem = await Comment.findByPk(id);
-
-      if (!commentItem) {
-        throw new NotFoundException("Comment", id);
-      }
-      return commentItem;
-    } catch (error) {
-      throw error;
-    }
-  }
-
   /*
-   * Returns an array of Comment
+   * get comments for a post
    */
-  async getAll(): Promise<Comment[]> {
+  async getPostComments(postId: string): Promise<Comment[]> {
     try {
-      const categories = await Comment.findAll();
-      return categories;
+      const comments = await Comment.findAll({
+        where: {
+          postId: postId
+        },
+        include: [
+          {
+            model: User,
+            attributes: ['id', 'username', 'email', 'phoneNumber', 'address']
+          },
+          {
+            model: Comment,
+            as: 'replies',
+            include: [
+              {
+                model: User,
+                attributes: ['id', 'username', 'email', 'phoneNumber', 'address']
+              }
+            ]
+          }
+        ]
+      });
+      // const post = await Post.findByPk(postId, {
+      //   include: [Comment],
+      // });
+      return comments;
     } catch (error) {
       throw error;
     }
@@ -62,7 +68,6 @@ export class CommentRepository implements IRepository<IComment, Comment> {
     try {
       const commentItem: any = await Comment.findByPk(id);
 
-      console.log(comment);
       if (!commentItem) {
         throw new NotFoundException("Comment", id.toString());
       }
