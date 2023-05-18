@@ -16,6 +16,9 @@ import { Tag } from "../../../data/entities/tag";
 import { Comment } from "../../../data/entities/comment";
 import { PostTag } from "../../../data/entities/post-tag";
 import { DocumentTag } from "../../../data/entities/document-tag";
+import { Project } from "../../../data/entities/project";
+import { Event } from "../../../data/entities/event";
+import { Service } from "../../../data/entities/service";
 dotenv.config();
 
 export class PostgresDbConfig {
@@ -40,7 +43,10 @@ export class PostgresDbConfig {
         DocumentFile,
         Comment,
         PostTag,
-        DocumentTag
+        DocumentTag,
+        Project,
+        Event,
+        Service
       ],
       logging: false,
       pool: {
