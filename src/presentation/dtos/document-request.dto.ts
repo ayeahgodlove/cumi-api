@@ -1,6 +1,6 @@
 // src/presentation/dtos/document-request.dto.ts
 
-import {  IsNotEmpty, IsString, Length, Min } from "class-validator";
+import {  IsNotEmpty, IsString, Length } from "class-validator";
 import { IDocument, emptyDocument } from "../../domain/models/document";
 import slugify from "slugify";
 import { nanoid } from "nanoid";
@@ -9,16 +9,16 @@ import { nanoid } from "nanoid";
 export class DocumentRequestDto {
   @IsNotEmpty()
   @IsString()
-  @Min(10)
+  @Length(10, 128)
   title: string;
 
   @IsNotEmpty()
   @IsString()
   description: string;
 
-  @IsNotEmpty()
-  @IsString()
-  fileUrl: string;
+  // @IsNotEmpty()
+  // @IsString()
+  // fileUrl: string;
 
   @IsNotEmpty()
   @IsString()
@@ -27,7 +27,7 @@ export class DocumentRequestDto {
   constructor(data: IDocument) {
     this.title = data.title;
     this.description = data.description;
-    this.fileUrl = data.fileUrl;
+    // this.fileUrl = data.fileUrl;
     this.categoryId = data.categoryId;
   }
 
@@ -39,7 +39,7 @@ export class DocumentRequestDto {
       title: this.title,
       description: this.description,
       categoryId: this.categoryId,
-      fileUrl: this.fileUrl, 
+      // fileUrl: this.fileUrl, 
     };
   }
 

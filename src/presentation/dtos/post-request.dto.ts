@@ -15,9 +15,9 @@ export class PostRequestDto {
   @IsString()
   content: string;
 
-  @IsNotEmpty()
-  @IsString()
-  imageUrl: string;
+  // @IsNotEmpty()
+  // @IsString()
+  // imageUrl: string;
 
   @IsNotEmpty()
   @IsString()
@@ -26,7 +26,7 @@ export class PostRequestDto {
   constructor(data: IPost) {
     this.title = data.title;
     this.content = data.content;
-    this.imageUrl = data.imageUrl;
+    // this.imageUrl = data.imageUrl;
     this.categoryId = data.categoryId;
   }
 
@@ -38,7 +38,7 @@ export class PostRequestDto {
       title: this.title,
       content: this.content,
       categoryId: this.categoryId,
-      imageUrl: this.imageUrl, 
+      // imageUrl: this.imageUrl, 
     };
   }
 

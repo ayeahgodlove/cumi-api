@@ -63,6 +63,18 @@ export class User extends Model<IUser> {
   address!: string;
 
   @Column({
+    type: DataType.FLOAT,
+    allowNull: true,
+  })
+  lat!: number;
+
+  @Column({
+    type: DataType.FLOAT,
+    allowNull: true,
+  })
+  long!: number;
+
+  @Column({
     type: DataType.STRING(255),
     allowNull: true,
     unique: true,

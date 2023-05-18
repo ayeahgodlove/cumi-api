@@ -20,6 +20,9 @@ export class PostsController {
     const user = req.user as User;
     const { filename } = req.file as Express.Multer.File;
 
+    if(filename === undefined) {
+     throw new Error("Photo not found!")
+    }
     if (validationErrors.length > 0) {
       res.status(400).json({
         validationErrors: displayValidationErrors(validationErrors) as any,
@@ -102,6 +105,7 @@ export class PostsController {
     const dto = new PostRequestDto(req.body);
     const validationErrors = await validate(dto);
     const { filename } = req.file as Express.Multer.File;
+    const user = req.user as User;
 
     if (validationErrors.length > 0) {
       res.status(400).json({
@@ -118,16 +122,17 @@ export class PostsController {
           ...emptyPost,
           ...req.body,
           id: id,
-          imageUrl: filename.toString()
+          imageUrl: filename.toString(),
+          authorId: user.id,
         };
         const updatedPost = await postUseCase.updatePost(obj);
         const postDto = postMapper.toDTO(updatedPost);
 
         res.json({
           data: postDto,
+          success: true,
           message: "Post Updated Successfully!",
           validationErrors: [],
-          success: true,
         });
       } catch (error: any) {
         res.status(400).json({

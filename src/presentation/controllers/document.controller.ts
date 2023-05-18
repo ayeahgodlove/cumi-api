@@ -11,6 +11,7 @@ import { DocumentRequestDto } from "../dtos/document-request.dto";
 import { validate } from "class-validator";
 import { displayValidationErrors } from "../../utils/displayValidationErrors";
 import { NotFoundException } from "../../shared/exceptions/not-found.exception";
+import { User } from "../../data/entities/user";
 
 const documentRepository = new DocumentRepository();
 const documentUseCase = new DocumentUseCase(documentRepository);
@@ -23,6 +24,8 @@ export class DocumentsController {
   ): Promise<void> {
     const dto = new DocumentRequestDto(req.body);
     const validationErrors = await validate(dto);
+    const user = req.user as User;
+    const { filename } = req.file as Express.Multer.File;
 
     if (validationErrors.length > 0) {
       res.status(400).json({
@@ -33,9 +36,11 @@ export class DocumentsController {
       });
     } else {
       try {
-        const documentResponse = await documentUseCase.createDocument(
-          dto.toData()
-        );
+        const documentResponse = await documentUseCase.createDocument({
+          ...dto.toData(),
+          userId: user.id,
+          fileUrl: filename.toString(),
+        });
 
         res.status(201).json({
           data: documentResponse.toJSON<IDocument>(),
@@ -109,6 +114,8 @@ export class DocumentsController {
   ): Promise<void> {
     const dto = new DocumentRequestDto(req.body);
     const validationErrors = await validate(dto);
+    const user = req.user as User;
+    const { filename } = req.file as Express.Multer.File;
 
     if (validationErrors.length > 0) {
       res.status(400).json({
@@ -125,6 +132,8 @@ export class DocumentsController {
           ...emptyDocument,
           ...req.body,
           id: id,
+          userId: user.id,
+          fileUrl: filename.toString(),
         };
         const updatedDocument = await documentUseCase.updateDocument(obj);
         const documentDto = documentMapper.toDTO(updatedDocument);
