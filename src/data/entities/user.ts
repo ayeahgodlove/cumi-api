@@ -63,13 +63,13 @@ export class User extends Model<IUser> {
   address!: string;
 
   @Column({
-    type: DataType.FLOAT,
+    type: DataType.DECIMAL,
     allowNull: true,
   })
   lat!: number;
 
   @Column({
-    type: DataType.FLOAT,
+    type: DataType.DECIMAL,
     allowNull: true,
   })
   long!: number;
