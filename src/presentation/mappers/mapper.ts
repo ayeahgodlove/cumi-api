@@ -14,6 +14,12 @@ import { IRole } from "../../domain/models/role";
 import { ITag } from "../../domain/models/tag";
 import { IUser } from "../../domain/models/user";
 import { IDocument } from "../../domain/models/document";
+import { Project } from "../../data/entities/project";
+import { IProject } from "../../domain/models/project";
+import { IEvent } from "../../domain/models/event";
+import { Event } from "../../data/entities/event";
+import { Service } from "../../data/entities/service";
+import { IService } from "../../domain/models/service";
 
 export class CategoryMapper {
   toDTO(category: Category): ICategory {
@@ -112,3 +118,44 @@ export class RoleMapper {
     return _roles;
   }
 }
+export class ProjectMapper {
+  toDTO(project: Project): IProject {
+    const entity = project.toJSON<IProject>();
+    return entity;
+  }
+  toDTOs(projects: Project[]): IProject[] {
+    const _projects = projects.map((project) => {
+      const entity = project.toJSON<IProject>();
+      return entity;
+    });
+    return _projects;
+  }
+}
+export class EventMapper {
+  toDTO(event: Event): IEvent {
+    const entity = event.toJSON<IEvent>();
+    return entity;
+  }
+  toDTOs(events: Event[]): IEvent[] {
+    const _events = events.map((event) => {
+      const entity = event.toJSON<IEvent>();
+      return entity;
+    });
+    return _events;
+  }
+}
+export class ServiceMapper {
+  toDTO(service: Service): IService {
+    const entity = service.toJSON<IService>();
+    return entity;
+  }
+  toDTOs(services: Service[]): IService[] {
+    const _services = services.map((service) => {
+      const entity = service.toJSON<IService>();
+      return entity;
+    });
+    return _services;
+  }
+}
+
+

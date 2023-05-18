@@ -42,13 +42,13 @@ export class Project extends Model<IProject> {
   imageUrl!: string;
 
   @Column({
-    type: DataType.STRING(255),
+    type: DataType.STRING(128),
     allowNull: false,
   })
   githubUrl!: string;
 
   @Column({
-    type: DataType.STRING(255),
+    type: DataType.STRING(128),
     allowNull: false,
   })
   deployUrl!: string;

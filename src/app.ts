@@ -20,6 +20,9 @@ import documentRouter from "./presentation/routes/document.route";
 import commentRouter from "./presentation/routes/comment.route";
 import tagRouter from "./presentation/routes/tag.route";
 import postRouter from "./presentation/routes/post.route";
+import eventRouter from "./presentation/routes/event.route";
+import serviceRouter from "./presentation/routes/service.route";
+import projectRouter from "./presentation/routes/project.route";
 
 dotenv.config();
 /**
@@ -40,7 +43,6 @@ const app: Express = express();
 // Function to serve all static files
 // inside public directory.
 app.use(express.static('public'));
-// app.use('/uploads/avatars', express.static('avatars'));
 
 // enable the use of request body parsing middleware
 app
@@ -92,6 +94,9 @@ app.use("/api/documents", documentRouter);
 app.use("/api/comments", commentRouter);
 app.use("/api/tags", tagRouter);
 app.use("/api/posts", postRouter);
+app.use("/api/events", eventRouter);
+app.use("/api/services", serviceRouter);
+app.use("/api/projects", projectRouter);
 
 // middleware interceptions
 app.use(errorHandler);

@@ -12,6 +12,12 @@ import { Tag } from "../../entities/tag";
 import { Comment } from "../../entities/comment";
 import { ITag } from "../../../domain/models/tag";
 import { IComment } from "../../../domain/models/comment";
+import { Project } from "../../entities/project";
+import { IProject } from "../../../domain/models/project";
+import { Service } from "../../entities/service";
+import { IService } from "../../../domain/models/service";
+import { IEvent } from "../../../domain/models/event";
+import { Event } from "../../entities/event";
 
 export interface IRepository<T, U> {
   create(category: T): Promise<U>;
@@ -49,4 +55,13 @@ export interface IRoleRepository extends IRepository<IRole, Role> {
 }
 export interface ITagRepository extends IRepository<ITag, Tag> {
   findByName(name: string): Promise<Tag | null>;
+}
+export interface IProjectRepository extends IRepository<IProject, Project> {
+  findByTitle(title: string): Promise<Project | null>;
+}
+export interface IServiceRepository extends IRepository<IService, Service> {
+  findByTitle(title: string): Promise<Service | null>;
+}
+export interface IEventRepository extends IRepository<IEvent, Event> {
+  findByTitle(title: string): Promise<Event | null>;
 }
