@@ -76,7 +76,6 @@ export class TagRepository implements ITagRepository {
     try {
       const tagItem: any = await Tag.findByPk(id);
 
-      console.log(tag);
       if (!tagItem) {
         throw new NotFoundException("Tag", id.toString());
       }

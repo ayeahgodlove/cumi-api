@@ -1,4 +1,4 @@
-import { Table, Model, Column, DataType, ForeignKey, BelongsTo } from "sequelize-typescript";
+import { Table, Model, Column, DataType, ForeignKey, BelongsTo, HasMany } from "sequelize-typescript";
 import { IComment } from "../../domain/models/comment";
 import { User } from "./user";
 import { Post } from "./post";
@@ -27,7 +27,7 @@ export class Comment extends Model<IComment> {
     type: DataType.STRING(128),
     allowNull: false,
   })
-  authorId!: string;
+  userId!: string;
   
   @ForeignKey(() => Post) // foreign key
   @Column({
@@ -44,6 +44,17 @@ export class Comment extends Model<IComment> {
   @BelongsTo(() => Post, "postId")
   post!: Post;
 
-  @BelongsTo(() => User, "authorId")
+  @BelongsTo(() => User, "userId")
   user!: User;
+
+  // extra fields
+  @ForeignKey(() => Comment) // foreign key
+  @Column
+  parent_id?: string;
+
+  @BelongsTo(() => Comment)
+  parent?: Comment;
+
+  @HasMany(() => Comment, { foreignKey: 'parent_id', as: 'replies'})
+  replies?: Comment[];
 }

@@ -126,7 +126,7 @@ export class TagsController {
           ...req.body,
           id: id,
         };
-        const updatedTag = await tagUseCase.updateTag(obj);
+        const updatedTag = await tagUseCase.updateTag(dto.toUpdateData(obj));
         const tagDto = tagMapper.toDTO(updatedTag);
 
         res.json({

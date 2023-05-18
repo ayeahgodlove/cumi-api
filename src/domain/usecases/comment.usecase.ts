@@ -11,7 +11,6 @@ export class CommentUseCase {
     //because it's already done in the Repository
     return this.commentRepository.create(comment);
   }
-
   async getAll(): Promise<Comment[]> {
     return this.commentRepository.getAll();
   }

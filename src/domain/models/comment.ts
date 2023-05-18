@@ -6,6 +6,8 @@ export interface IComment {
   userId: string; //foreign key to user table
   postId: string; //foreign key to post table
   publishedAt: Date;
+  parent_id?: string;
+  replies?: IComment[];
 }
 
 export const emptyComment: IComment = {
@@ -14,6 +16,8 @@ export const emptyComment: IComment = {
   userId: "",
   postId: "",
   publishedAt: new Date(),
+  parent_id: "",
+  replies: [],
 };
 
 export interface ICommentResponse extends IBaseResponse {

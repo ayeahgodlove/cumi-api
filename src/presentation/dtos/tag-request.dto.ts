@@ -27,7 +27,7 @@ export class TagRequestDto {
     return {
       id: data.id,
       name: data.name,
-      slug: data.slug,
+      slug: slugify(data.name, {lower: true, replacement: "-"}),
     }
   }
 }

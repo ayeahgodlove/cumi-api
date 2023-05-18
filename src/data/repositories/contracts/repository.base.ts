@@ -18,7 +18,6 @@ export interface IRepository<T, U> {
   update(category: T): Promise<U>;
   delete(id: string): Promise<void>;
 }
-
 export interface IPostRepository extends IRepository<IPost, Post> {
   findByTitle(title: string): Promise<Post | null>;
 }
