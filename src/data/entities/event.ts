@@ -42,7 +42,7 @@ export class Event extends Model<IEvent> {
   imageUrl!: string;
 
   @Column({
-    type: DataType.STRING(255),
+    type: DataType.STRING(128),
     allowNull: false,
   })
   location!: string;

@@ -52,12 +52,7 @@ export class UsersController {
       const users = await userUseCase.getAll();
       const usersDTO = userMapper.toDTOs(users);
 
-      res.json({
-        data: usersDTO,
-        message: "Success",
-        validationErrors: [],
-        success: true,
-      });
+      res.json(usersDTO);
     } catch (error: any) {
       res.status(400).json({
         data: null,
@@ -105,6 +100,26 @@ export class UsersController {
           success: false,
         });
       }
+    }
+  }
+
+  async getUserById(req: Request, res: Response<any>): Promise<void> {
+    try {
+      const id = req.params.id;
+
+      const user = await userUseCase.getUserById(id);
+      if (!user) {
+        throw new NotFoundException("User", id);
+      }
+      const userDTO = userMapper.toDTO(user);
+      res.json(userDTO);
+    } catch (error: any) {
+      res.status(400).json({
+        data: null,
+        message: error.message,
+        validationErrors: [error],
+        success: false,
+      });
     }
   }
 

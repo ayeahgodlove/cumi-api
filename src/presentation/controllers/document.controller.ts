@@ -12,6 +12,7 @@ import { validate } from "class-validator";
 import { displayValidationErrors } from "../../utils/displayValidationErrors";
 import { NotFoundException } from "../../shared/exceptions/not-found.exception";
 import { User } from "../../data/entities/user";
+import { deleteFile } from "../../utils/util";
 
 const documentRepository = new DocumentRepository();
 const documentUseCase = new DocumentUseCase(documentRepository);
@@ -25,7 +26,6 @@ export class DocumentsController {
     const dto = new DocumentRequestDto(req.body);
     const validationErrors = await validate(dto);
     const user = req.user as User;
-    const { filename } = req.file as Express.Multer.File;
 
     if (validationErrors.length > 0) {
       res.status(400).json({
@@ -39,7 +39,7 @@ export class DocumentsController {
         const documentResponse = await documentUseCase.createDocument({
           ...dto.toData(),
           userId: user.id,
-          fileUrl: filename.toString(),
+          fileUrl: req.body.fileUrl,
         });
 
         res.status(201).json({
@@ -64,12 +64,7 @@ export class DocumentsController {
       const documents = await documentUseCase.getAll();
       const documentsDTO = documentMapper.toDTOs(documents);
 
-      res.json({
-        data: documentsDTO,
-        message: "Success",
-        validationErrors: [],
-        success: true,
-      });
+      res.json(documentsDTO);
     } catch (error: any) {
       res.status(400).json({
         data: null,
@@ -80,10 +75,7 @@ export class DocumentsController {
     }
   }
 
-  async getDocumentById(
-    req: Request,
-    res: Response<IDocumentResponse>
-  ): Promise<void> {
+  async getDocumentById(req: Request, res: Response<any>): Promise<void> {
     try {
       const id = req.params.id;
 
@@ -92,12 +84,7 @@ export class DocumentsController {
         throw new NotFoundException("Document", id);
       }
       const documentDTO = documentMapper.toDTO(document);
-      res.json({
-        data: documentDTO,
-        message: "Success",
-        validationErrors: [],
-        success: true,
-      });
+      res.json(documentDTO);
     } catch (error: any) {
       res.status(400).json({
         data: null,
@@ -115,7 +102,6 @@ export class DocumentsController {
     const dto = new DocumentRequestDto(req.body);
     const validationErrors = await validate(dto);
     const user = req.user as User;
-    const { filename } = req.file as Express.Multer.File;
 
     if (validationErrors.length > 0) {
       res.status(400).json({
@@ -127,13 +113,18 @@ export class DocumentsController {
     } else {
       try {
         const id = req.params.id;
+        const document = await documentUseCase.getDocumentById(id);
+
+        if (document) {
+          deleteFile(document.dataValues.fileUrl, "documents");
+        }
 
         const obj: IDocument = {
           ...emptyDocument,
           ...req.body,
           id: id,
           userId: user.id,
-          fileUrl: filename.toString(),
+          fileUrl: req.body.fileUrl,
         };
         const updatedDocument = await documentUseCase.updateDocument(obj);
         const documentDto = documentMapper.toDTO(updatedDocument);
@@ -161,6 +152,11 @@ export class DocumentsController {
   ): Promise<void> {
     try {
       const id = req.params.id;
+      const document = await documentUseCase.getDocumentById(id);
+
+      if (document) {
+        deleteFile(document.dataValues.fileUrl, "documents");
+      }
 
       await documentUseCase.deleteDocument(id);
 

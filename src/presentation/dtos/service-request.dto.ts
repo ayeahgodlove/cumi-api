@@ -13,9 +13,14 @@ export class ServiceRequestDto {
   @IsString()
   description: string;
 
+  @IsNotEmpty()
+  @IsString()
+  icon: string;
+
   constructor(data: IService) {
     this.title = data.title;
     this.description = data.description;
+    this.icon = data.icon;
   }
 
   toData(): IService {
@@ -24,6 +29,7 @@ export class ServiceRequestDto {
       id: nanoid(10),
       title: this.title,
       description: this.description,
+      icon: this.icon,
     };
   }
 
@@ -33,6 +39,7 @@ export class ServiceRequestDto {
       title: data.title,
       description: data.description,
       userId: data.userId,
+      icon: data.icon,
     };
   }
 }

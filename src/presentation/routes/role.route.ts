@@ -7,10 +7,10 @@ const roleController = new RolesController();
 
 const roleRouter = Router();
 
-roleRouter.get("", isAuthenticatedMiddleware, roleController.getAll);
-roleRouter.get("/:id", isAuthenticatedMiddleware, roleController.getRoleById);
+roleRouter.get("", roleController.getAll);
+roleRouter.get("/:id", roleController.getRoleById);
 roleRouter.post("", isAuthenticatedMiddleware, roleController.createRole);
-roleRouter.put("/:id", isAuthenticatedMiddleware, roleController.updateRole);
+roleRouter.patch("/:id", isAuthenticatedMiddleware, roleController.updateRole);
 roleRouter.delete("/:id", isAuthenticatedMiddleware, roleController.deleteRole);
 
 export default roleRouter;

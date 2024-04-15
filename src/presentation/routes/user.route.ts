@@ -8,7 +8,8 @@ const userController = new UsersController();
 
 const userRouter = Router();
 
-userRouter.get("", isAuthenticatedMiddleware, userController.getAll);
+userRouter.get("", userController.getAll);
+userRouter.get("/:id", userController.getUserById);
 userRouter.get("/me", isAuthenticatedMiddleware, (req, res) => {
   try {
     const user = req.user;
@@ -26,7 +27,7 @@ userRouter.get("/me", isAuthenticatedMiddleware, (req, res) => {
   }
 });
 userRouter.post("", userController.createUser);
-userRouter.put("/:id", isAuthenticatedMiddleware, userController.updateUser);
+userRouter.patch("/:id", isAuthenticatedMiddleware, userController.updateUser);
 userRouter.delete("/:id", isAuthenticatedMiddleware, userController.deleteUser);
 // upload user avatar image
 userRouter.post(

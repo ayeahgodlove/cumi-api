@@ -12,11 +12,6 @@ export class EventRequestDto {
   @IsNotEmpty()
   @IsString()
   description: string;
-  
-  @IsNotEmpty()
-  @IsString()
-  @Length(10, 128)
-  imageUrl: string;
 
   @IsNotEmpty()
   @IsString()
@@ -27,7 +22,6 @@ export class EventRequestDto {
   constructor(data: IEvent) {
     this.title = data.title;
     this.description = data.description;
-    this.imageUrl = data.imageUrl;
     this.location = data.location;
   }
 
@@ -37,7 +31,6 @@ export class EventRequestDto {
       id: nanoid(10),
       title: this.title,
       description: this.description,
-      imageUrl: this.imageUrl,
       location: this.location,
     };
   }

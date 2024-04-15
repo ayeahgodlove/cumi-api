@@ -10,7 +10,7 @@ const commentRouter = Router();
 commentRouter.get("/:postId", isAuthenticatedMiddleware, commentController.getPostComments);
 // commentRouter.get("/:id", isAuthenticatedMiddleware, commentController.getCommentById);
 commentRouter.post("/", isAuthenticatedMiddleware, commentController.createComment); //create comment
-commentRouter.put("/:id", isAuthenticatedMiddleware, commentController.updateComment);
+commentRouter.patch("/:id", isAuthenticatedMiddleware, commentController.updateComment);
 commentRouter.delete("/:id", isAuthenticatedMiddleware, commentController.deleteComment);
 
 export default commentRouter;

@@ -14,8 +14,6 @@ import { authRoutes } from "./presentation/routes/auth/auth.route";
 
 import Passport from "./shared/middlewares/authz.middleware";
 import userRouter from "./presentation/routes/user.route";
-import { store } from "./shared/helper/redis.config";
-import RedisStore from "connect-redis";
 import documentRouter from "./presentation/routes/document.route";
 import commentRouter from "./presentation/routes/comment.route";
 import tagRouter from "./presentation/routes/tag.route";
@@ -23,6 +21,8 @@ import postRouter from "./presentation/routes/post.route";
 import eventRouter from "./presentation/routes/event.route";
 import serviceRouter from "./presentation/routes/service.route";
 import projectRouter from "./presentation/routes/project.route";
+import bannerRouter from "./presentation/routes/banner.route";
+import uploadRouter from "./presentation/routes/upload.route";
 
 dotenv.config();
 /**
@@ -76,6 +76,12 @@ app
 const db = new PostgresDbConfig();
 db.connection();
 
+// Custom middleware to add Access-Control-Allow-Origin header
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  // You can add other CORS headers here if needed
+  next();
+});
 // authentication
 app.use("/", authRoutes);
 
@@ -97,6 +103,9 @@ app.use("/api/posts", postRouter);
 app.use("/api/events", eventRouter);
 app.use("/api/services", serviceRouter);
 app.use("/api/projects", projectRouter);
+app.use("/api/banners", bannerRouter);
+app.use("/api/banners", bannerRouter);
+app.use("/api/uploads", uploadRouter);
 
 // middleware interceptions
 app.use(errorHandler);

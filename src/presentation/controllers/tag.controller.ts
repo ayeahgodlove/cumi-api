@@ -59,12 +59,7 @@ export class TagsController {
       const tags = await tagUseCase.getAll();
       const tagsDTO = tagMapper.toDTOs(tags);
 
-      res.json({
-        data: tagsDTO,
-        message: "Success",
-        validationErrors: [],
-        success: true,
-      });
+      res.json(tagsDTO);
     } catch (error: any) {
       res.status(400).json({
         data: null,
@@ -77,7 +72,7 @@ export class TagsController {
 
   async getTagById(
     req: Request,
-    res: Response<ITagResponse>
+    res: Response<any>
   ): Promise<void> {
     try {
       const id = req.params.id;
@@ -87,12 +82,7 @@ export class TagsController {
         throw new NotFoundException("Tag", id);
       }
       const tagDTO = tagMapper.toDTO(tag);
-      res.json({
-        data: tagDTO,
-        message: "Success",
-        validationErrors: [],
-        success: true,
-      });
+      res.json(tagDTO);
     } catch (error: any) {
       res.status(400).json({
         data: null,

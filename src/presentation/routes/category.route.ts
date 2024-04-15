@@ -7,10 +7,11 @@ const categoryController = new CategoriesController();
 
 const categoryRouter = Router();
 
-categoryRouter.get("", isAuthenticatedMiddleware, categoryController.getAll);
-categoryRouter.get("/:id", isAuthenticatedMiddleware, categoryController.getCategoryById);
+categoryRouter.get("",  categoryController.getAll);
+categoryRouter.get("/:id", categoryController.getCategoryById);
 categoryRouter.post("", isAuthenticatedMiddleware, categoryController.createCategory);
-categoryRouter.put("/:id", isAuthenticatedMiddleware, categoryController.updateCategory);
+categoryRouter.patch("/:id", isAuthenticatedMiddleware, categoryController.updateCategory);
 categoryRouter.delete("/:id", isAuthenticatedMiddleware, categoryController.deleteCategory);
 
 export default categoryRouter;
+ 

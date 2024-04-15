@@ -14,6 +14,12 @@ import { Category } from "./category";
 import { Comment } from "./comment";
 import { PostTag } from "./post-tag";
 import { Tag } from "./tag";
+
+enum STATUS {
+  DRAFT = "DRAFT",
+  PUBLISHED = "PUBLISHED",
+  REJECTED = "REJECTED",
+}
 @Table({
   timestamps: true,
   paranoid: true,
@@ -48,10 +54,22 @@ export class Post extends Model<IPost> {
   content!: string;
 
   @Column({
+    type: DataType.STRING(255),
+    allowNull: false,
+  })
+  description!: string;
+
+  @Column({
     type: DataType.STRING(128),
     allowNull: false,
   })
   imageUrl!: string;
+
+  @Column({
+    type: DataType.ENUM(STATUS.DRAFT, STATUS.PUBLISHED, STATUS.REJECTED),
+    allowNull: false,
+  })
+  status!: string;
 
   @Column({
     type: DataType.DATE,
@@ -78,7 +96,7 @@ export class Post extends Model<IPost> {
 
   @BelongsTo(() => Category, "categoryId")
   category!: Category;
-  
+
   @HasMany(() => Comment)
   comments!: Comment[];
 

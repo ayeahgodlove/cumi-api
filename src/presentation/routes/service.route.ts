@@ -7,10 +7,10 @@ const serviceController = new ServicesController();
 
 const serviceRouter = Router();
 
-serviceRouter.get("", isAuthenticatedMiddleware, serviceController.getAll);
-serviceRouter.get("/:id", isAuthenticatedMiddleware, serviceController.getServiceById);
+serviceRouter.get("",serviceController.getAll);
+serviceRouter.get("/:id", serviceController.getServiceById);
 serviceRouter.post("", isAuthenticatedMiddleware, serviceController.createService);
-serviceRouter.put("/:id", isAuthenticatedMiddleware, serviceController.updateService);
+serviceRouter.patch("/:id", isAuthenticatedMiddleware, serviceController.updateService);
 serviceRouter.delete("/:id", isAuthenticatedMiddleware, serviceController.deleteService);
 
 export default serviceRouter;

@@ -11,6 +11,8 @@ import { ProjectRequestDto } from "../dtos/project-request.dto";
 import { validate } from "class-validator";
 import { displayValidationErrors } from "../../utils/displayValidationErrors";
 import { NotFoundException } from "../../shared/exceptions/not-found.exception";
+import { User } from "../../data/entities/user";
+import { deleteFile } from "../../utils/util";
 
 const projectRepository = new ProjectRepository();
 const projectUseCase = new ProjectUseCase(projectRepository);
@@ -23,6 +25,7 @@ export class ProjectsController {
   ): Promise<void> {
     const dto = new ProjectRequestDto(req.body);
     const validationErrors = await validate(dto);
+    const user = req.user as User;
 
     if (validationErrors.length > 0) {
       res.status(400).json({
@@ -33,9 +36,11 @@ export class ProjectsController {
       });
     } else {
       try {
-        const projectResponse = await projectUseCase.createProject(
-          dto.toData()
-        );
+        const projectResponse = await projectUseCase.createProject({
+          ...dto.toData(),
+          userId: user.id,
+          imageUrl: req.body.imageUrl,
+        });
 
         res.status(201).json({
           data: projectResponse.toJSON<IProject>(),
@@ -59,12 +64,7 @@ export class ProjectsController {
       const projects = await projectUseCase.getAll();
       const projectsDTO = projectMapper.toDTOs(projects);
 
-      res.json({
-        data: projectsDTO,
-        message: "Success",
-        validationErrors: [],
-        success: true,
-      });
+      res.json(projectsDTO);
     } catch (error: any) {
       res.status(400).json({
         data: null,
@@ -75,10 +75,7 @@ export class ProjectsController {
     }
   }
 
-  async getProjectById(
-    req: Request,
-    res: Response<IProjectResponse>
-  ): Promise<void> {
+  async getProjectById(req: Request, res: Response<any>): Promise<void> {
     try {
       const id = req.params.id;
 
@@ -87,12 +84,7 @@ export class ProjectsController {
         throw new NotFoundException("Project", id);
       }
       const projectDTO = projectMapper.toDTO(project);
-      res.json({
-        data: projectDTO,
-        message: "Success",
-        validationErrors: [],
-        success: true,
-      });
+      res.json(projectDTO);
     } catch (error: any) {
       res.status(400).json({
         data: null,
@@ -109,6 +101,7 @@ export class ProjectsController {
   ): Promise<void> {
     const dto = new ProjectRequestDto(req.body);
     const validationErrors = await validate(dto);
+    const user = req.user as User;
 
     if (validationErrors.length > 0) {
       res.status(400).json({
@@ -120,11 +113,18 @@ export class ProjectsController {
     } else {
       try {
         const id = req.params.id;
+        const project = await projectUseCase.getProjectById(id);
+
+        if (project) {
+          deleteFile(project.dataValues.imageUrl, "projects");
+        }
 
         const obj: IProject = {
           ...emptyProject,
           ...req.body,
           id: id,
+          imageUrl: req.body.imageUrl,
+          userId: user.id,
         };
         const updatedProject = await projectUseCase.updateProject(obj);
         const projectDto = projectMapper.toDTO(updatedProject);
@@ -152,6 +152,11 @@ export class ProjectsController {
   ): Promise<void> {
     try {
       const id = req.params.id;
+      const project = await projectUseCase.getProjectById(id);
+
+      if (project) {
+        deleteFile(project.dataValues.imageUrl, "projects");
+      }
 
       await projectUseCase.deleteProject(id);
 

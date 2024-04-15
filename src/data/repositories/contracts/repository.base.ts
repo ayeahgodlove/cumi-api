@@ -18,6 +18,8 @@ import { Service } from "../../entities/service";
 import { IService } from "../../../domain/models/service";
 import { IEvent } from "../../../domain/models/event";
 import { Event } from "../../entities/event";
+import { Banner } from "../../entities/banner";
+import { IBanner } from "../../../domain/models/banner";
 
 export interface IRepository<T, U> {
   create(category: T): Promise<U>;
@@ -27,13 +29,14 @@ export interface IRepository<T, U> {
   delete(id: string): Promise<void>;
 }
 export interface ICommentRepository {
-  create(category: IComment): Promise<Comment>;
+  create(comment: IComment): Promise<Comment>;
   getPostComments(postId: string): Promise<Comment[]>;
-  update(category: IComment): Promise<Comment>;
+  update(comment: IComment): Promise<Comment>;
   delete(id: string): Promise<void>;
 }
 export interface IPostRepository extends IRepository<IPost, Post> {
   findByTitle(title: string): Promise<Post | null>;
+  findBySlug(slug: string): Promise<Post | null>;
 }
 export interface IDocumentRepository extends IRepository<IDocument, DocumentFile> {
   findByTitle(title: string): Promise<DocumentFile | null>;
@@ -64,4 +67,8 @@ export interface IServiceRepository extends IRepository<IService, Service> {
 }
 export interface IEventRepository extends IRepository<IEvent, Event> {
   findByTitle(title: string): Promise<Event | null>;
+}
+
+export interface IBannerRepository extends IRepository<IBanner, Banner> {
+  findByTitle(title: string): Promise<Banner | null>;
 }

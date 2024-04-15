@@ -19,6 +19,8 @@ import { DocumentTag } from "../../../data/entities/document-tag";
 import { Project } from "../../../data/entities/project";
 import { Event } from "../../../data/entities/event";
 import { Service } from "../../../data/entities/service";
+import { UserRole } from "../../../data/entities/user-role";
+import { Banner } from "../../../data/entities/banner";
 dotenv.config();
 
 export class PostgresDbConfig {
@@ -37,6 +39,7 @@ export class PostgresDbConfig {
       models: [
         User,
         Role,
+        UserRole,
         Category,
         Tag,
         Post,
@@ -46,6 +49,7 @@ export class PostgresDbConfig {
         DocumentTag,
         Project,
         Event,
+        Banner,
         Service
       ],
       logging: false,

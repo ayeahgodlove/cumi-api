@@ -1,6 +1,7 @@
-import { Table, Model, Column, DataType, HasMany } from "sequelize-typescript";
+import { Table, Model, Column, DataType, BelongsToMany } from "sequelize-typescript";
 import { IRole } from "../../domain/models/role";
 import { User } from "./user";
+import { UserRole } from "./user-role";
 
 @Table({
   timestamps: true,
@@ -22,7 +23,10 @@ export class Role extends Model<IRole> {
     unique: true,
   })
   name!: string;
-  // relationships
-  @HasMany(() => User)
-  users!: User[];
+
+    // relationships
+   // Define the many-to-many association with User
+   @BelongsToMany(() => User, () => UserRole, 'userId', 'roleId')
+   users!: User[];
+
 }

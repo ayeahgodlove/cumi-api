@@ -30,24 +30,30 @@ export class CommentRepository implements ICommentRepository {
     try {
       const comments = await Comment.findAll({
         where: {
-          postId: postId
+          postId: postId,
         },
-        include: [
-          {
-            model: User,
-            attributes: ['id', 'username', 'email', 'phoneNumber', 'address']
-          },
-          {
-            model: Comment,
-            as: 'replies',
-            include: [
-              {
-                model: User,
-                attributes: ['id', 'username', 'email', 'phoneNumber', 'address']
-              }
-            ]
-          }
-        ]
+        // include: [
+        //   {
+        //     model: User,
+        //     attributes: ["id", "username", "email", "phoneNumber", "address"],
+        //   },
+        //   {
+        //     model: Comment,
+        //     as: "replies",
+        //     include: [
+        //       {
+        //         model: User,
+        //         attributes: [
+        //           "id",
+        //           "username",
+        //           "email",
+        //           "phoneNumber",
+        //           "address",
+        //         ],
+        //       },
+        //     ],
+        //   },
+        // ],
       });
       // const post = await Post.findByPk(postId, {
       //   include: [Comment],

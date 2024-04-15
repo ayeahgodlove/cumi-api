@@ -58,6 +58,8 @@ export class UserRequestDto {
       authStrategy: data.authStrategy,
       avatar: data.avatar,
       dateRegistered: data.dateRegistered,
+      lat: 0,
+      long: 0
     };
   }
 }

@@ -4,13 +4,15 @@ export interface IService {
   title: string;
   description: string;
   userId: string;
+  icon: string
 }
 
 export const emptyService: IService = {
   id: "",
   title: "",
   description: "",
-  userId: ""
+  userId: "",
+  icon: ""
 };
 
 export interface IServiceResponse extends IBaseResponse {

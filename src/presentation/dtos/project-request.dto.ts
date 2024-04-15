@@ -13,12 +13,6 @@ export class ProjectRequestDto {
   @IsString()
   description: string;
 
-  
-  @IsNotEmpty()
-  @IsString()
-  @Length(10, 128)
-  imageUrl: string;
-
   @IsNotEmpty()
   @IsString()
   @Length(10, 128)
@@ -32,7 +26,6 @@ export class ProjectRequestDto {
   constructor(data: IProject) {
     this.title = data.title;
     this.description = data.description;
-    this.imageUrl = data.imageUrl;
     this.githubUrl = data.githubUrl;
     this.deployUrl = data.deployUrl;
   }
@@ -45,7 +38,6 @@ export class ProjectRequestDto {
       deployUrl: this.deployUrl,
       description: this.description,
       githubUrl: this.githubUrl,
-      imageUrl: this.imageUrl
     };
   }
 

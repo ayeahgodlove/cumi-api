@@ -11,6 +11,7 @@ import { ServiceRequestDto } from "../dtos/service-request.dto";
 import { validate } from "class-validator";
 import { displayValidationErrors } from "../../utils/displayValidationErrors";
 import { NotFoundException } from "../../shared/exceptions/not-found.exception";
+import { User } from "../../data/entities/user";
 
 const serviceRepository = new ServiceRepository();
 const serviceUseCase = new ServiceUseCase(serviceRepository);
@@ -23,6 +24,7 @@ export class ServicesController {
   ): Promise<void> {
     const dto = new ServiceRequestDto(req.body);
     const validationErrors = await validate(dto);
+    const user = req.user as User;
 
     if (validationErrors.length > 0) {
       res.status(400).json({
@@ -33,9 +35,10 @@ export class ServicesController {
       });
     } else {
       try {
-        const serviceResponse = await serviceUseCase.createService(
-          dto.toData()
-        );
+        const serviceResponse = await serviceUseCase.createService({
+          ...dto.toData(),
+          userId: user.id || user.dataValues.id,
+        });
 
         res.status(201).json({
           data: serviceResponse.toJSON<IService>(),
@@ -59,12 +62,7 @@ export class ServicesController {
       const services = await serviceUseCase.getAll();
       const servicesDTO = serviceMapper.toDTOs(services);
 
-      res.json({
-        data: servicesDTO,
-        message: "Success",
-        validationErrors: [],
-        success: true,
-      });
+      res.json(servicesDTO);
     } catch (error: any) {
       res.status(400).json({
         data: null,
@@ -75,10 +73,7 @@ export class ServicesController {
     }
   }
 
-  async getServiceById(
-    req: Request,
-    res: Response<IServiceResponse>
-  ): Promise<void> {
+  async getServiceById(req: Request, res: Response<any>): Promise<void> {
     try {
       const id = req.params.id;
 
@@ -87,12 +82,7 @@ export class ServicesController {
         throw new NotFoundException("Service", id);
       }
       const serviceDTO = serviceMapper.toDTO(service);
-      res.json({
-        data: serviceDTO,
-        message: "Success",
-        validationErrors: [],
-        success: true,
-      });
+      res.json(serviceDTO);
     } catch (error: any) {
       res.status(400).json({
         data: null,
@@ -109,6 +99,7 @@ export class ServicesController {
   ): Promise<void> {
     const dto = new ServiceRequestDto(req.body);
     const validationErrors = await validate(dto);
+    const user = req.user as User;
 
     if (validationErrors.length > 0) {
       res.status(400).json({
@@ -125,6 +116,7 @@ export class ServicesController {
           ...emptyService,
           ...req.body,
           id: id,
+          userId: user.id || user.dataValues.id,
         };
         const updatedService = await serviceUseCase.updateService(obj);
         const serviceDto = serviceMapper.toDTO(updatedService);

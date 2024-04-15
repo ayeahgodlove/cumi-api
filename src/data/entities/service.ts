@@ -30,6 +30,14 @@ export class Service extends Model<IService> {
   title!: string;
 
   @Column({
+    type: DataType.STRING(20),
+    allowNull: false,
+    unique: true,
+  })
+  icon!: string;
+
+
+  @Column({
     type: DataType.TEXT,
     allowNull: false,
   })

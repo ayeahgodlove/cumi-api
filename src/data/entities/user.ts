@@ -4,14 +4,14 @@ import {
   Column,
   DataType,
   HasMany,
-  ForeignKey,
-  BelongsTo,
+  BelongsToMany,
 } from "sequelize-typescript";
 import { IUser } from "../../domain/models/user";
 import { Role } from "./role";
 import { Post } from "./post";
 import { DocumentFile } from "./document";
 import { Comment } from "./comment";
+import { UserRole } from "./user-role";
 @Table({
   timestamps: true,
   paranoid: true,
@@ -81,10 +81,6 @@ export class User extends Model<IUser> {
   })
   password!: string;
 
-  @ForeignKey(() => Role) // foreign key
-  @Column
-  roleId!: string;
-
   // relationships
   @HasMany(() => DocumentFile)
   documents!: DocumentFile[];
@@ -95,6 +91,7 @@ export class User extends Model<IUser> {
   @HasMany(() => Comment)
   comments!: Comment[];
 
-  @BelongsTo(() => Role, "roleId")
-  role!: Role;
+  // Define the many-to-many association with Role
+  @BelongsToMany(() => Role, () => UserRole, "roleId", "userId")
+  roles!: Role[];
 }

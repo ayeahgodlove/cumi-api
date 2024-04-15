@@ -20,6 +20,8 @@ import { IEvent } from "../../domain/models/event";
 import { Event } from "../../data/entities/event";
 import { Service } from "../../data/entities/service";
 import { IService } from "../../domain/models/service";
+import { Banner } from "../../data/entities/banner";
+import { IBanner } from "../../domain/models/banner";
 
 export class CategoryMapper {
   toDTO(category: Category): ICategory {
@@ -73,6 +75,8 @@ export class CommentMapper {
       const entity = comment.toJSON<IComment>();
       return entity;
     });
+
+    // const filteredComments = _comments.filter(c => c.parent_id === "" || c.parent_id === null);
     return _comments;
   }
 }
@@ -131,6 +135,20 @@ export class ProjectMapper {
     return _projects;
   }
 }
+export class BannerMapper {
+  toDTO(banner: Banner): IBanner {
+    const entity = banner.toJSON<IBanner>();
+    return entity;
+  }
+  toDTOs(banners: Banner[]): IBanner[] {
+    const _banners = banners.map((banner) => {
+      const entity = banner.toJSON<IBanner>();
+      return entity;
+    });
+    return _banners;
+  }
+}
+
 export class EventMapper {
   toDTO(event: Event): IEvent {
     const entity = event.toJSON<IEvent>();
@@ -144,6 +162,7 @@ export class EventMapper {
     return _events;
   }
 }
+
 export class ServiceMapper {
   toDTO(service: Service): IService {
     const entity = service.toJSON<IService>();
@@ -157,5 +176,3 @@ export class ServiceMapper {
     return _services;
   }
 }
-
-
