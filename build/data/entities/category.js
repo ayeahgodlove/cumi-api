@@ -11,10 +11,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Category = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
+const document_1 = require("./document");
+const post_1 = require("./post");
 let Category = class Category extends sequelize_typescript_1.Model {
     name;
     slug;
-    description;
+    documents;
+    posts;
 };
 __decorate([
     (0, sequelize_typescript_1.Column)({
@@ -41,12 +44,13 @@ __decorate([
     __metadata("design:type", String)
 ], Category.prototype, "slug", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.TEXT,
-        allowNull: false,
-    }),
-    __metadata("design:type", String)
-], Category.prototype, "description", void 0);
+    (0, sequelize_typescript_1.HasMany)(() => document_1.DocumentFile),
+    __metadata("design:type", Array)
+], Category.prototype, "documents", void 0);
+__decorate([
+    (0, sequelize_typescript_1.HasMany)(() => post_1.Post),
+    __metadata("design:type", Array)
+], Category.prototype, "posts", void 0);
 Category = __decorate([
     (0, sequelize_typescript_1.Table)({
         timestamps: true,

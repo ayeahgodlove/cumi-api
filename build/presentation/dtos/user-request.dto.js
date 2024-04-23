@@ -16,66 +16,41 @@ const user_1 = require("../../domain/models/user");
 const nanoid_1 = require("nanoid");
 class UserRequestDto {
     username;
-    // @Length(4)
-    firstname;
-    // @Length(4)
-    lastname;
     email;
-    // @IsNotEmpty()
-    // @IsString()
-    // @Length(9)
-    // phoneNumber: string;
-    whatsappNumber;
     password;
-    // @IsNotEmpty()
-    // @IsString()
-    // avatar!: string;
-    // @IsNotEmpty()
-    // @IsString()
-    // authStrategy!: string;
+    phoneNumber;
+    address;
     constructor(data) {
         this.username = data.username;
-        this.firstname = data.firstname;
-        this.lastname = data.lastname;
-        this.username = data.username;
         this.email = data.email;
-        // this.phoneNumber = data.phoneNumber;
-        this.whatsappNumber = data.whatsappNumber;
         this.password = data.password;
-        // this.authStrategy = data.authStrategy;
+        this.address = data.address;
+        this.phoneNumber = data.phoneNumber;
     }
     toData() {
         return {
             ...user_1.emptyUser,
             id: (0, nanoid_1.nanoid)(15),
             username: this.username,
-            firstname: this.firstname,
-            lastname: this.lastname,
             email: this.email,
-            // phoneNumber: this.phoneNumber,
-            whatsappNumber: this.whatsappNumber,
             password: this.password,
-            // authStrategy: this.authStrategy,
-            // avatar: this.avatar
+            address: this.address,
+            phoneNumber: this.phoneNumber,
         };
     }
     toUpdateData(data) {
         return {
             id: data.id,
             username: data.username,
-            firstname: data.firstname,
-            lastname: data.lastname,
             email: data.email,
             phoneNumber: data.phoneNumber,
-            whatsappNumber: data.whatsappNumber,
             password: data.password,
             address: data.address,
-            city: data.city,
-            country: data.country,
-            createdAt: data.createdAt,
-            updatedAt: data.updatedAt,
             authStrategy: data.authStrategy,
-            avatar: data.avatar
+            avatar: data.avatar,
+            dateRegistered: data.dateRegistered,
+            lat: 0,
+            long: 0
         };
     }
 }
@@ -88,34 +63,22 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.Length)(4, 25)
-    // @Length(4)
-    ,
-    __metadata("design:type", String)
-], UserRequestDto.prototype, "firstname", void 0);
-__decorate([
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.Length)(4, 25)
-    // @Length(4)
-    ,
-    __metadata("design:type", String)
-], UserRequestDto.prototype, "lastname", void 0);
-__decorate([
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], UserRequestDto.prototype, "email", void 0);
-__decorate([
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.Length)(9),
-    __metadata("design:type", String)
-], UserRequestDto.prototype, "whatsappNumber", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.Length)(8),
     __metadata("design:type", String)
 ], UserRequestDto.prototype, "password", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], UserRequestDto.prototype, "phoneNumber", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], UserRequestDto.prototype, "address", void 0);
 exports.UserRequestDto = UserRequestDto;

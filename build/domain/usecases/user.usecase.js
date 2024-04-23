@@ -27,7 +27,6 @@ class UserUseCase {
     async updateUser(user) {
         const obj = {
             ...user,
-            updatedAt: new Date(),
         };
         return this.userRepository.update(obj);
     }
@@ -38,13 +37,6 @@ class UserUseCase {
         const user = (await this.userRepository.findById(id));
         user.avatar = filename.toString();
         return await user.update({ ...user });
-        // console.log("user: ", user, "fileName: ", filename)
-        // const obj: IUser = {
-        //   ...user,
-        //   avatar: filename,
-        //   updatedAt: new Date(),
-        // } as IUser;
-        // return this.userRepository.update(obj);
     }
 }
 exports.UserUseCase = UserUseCase;

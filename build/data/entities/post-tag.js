@@ -9,52 +9,46 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Review = void 0;
+exports.PostTag = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
-const user_1 = require("./user");
-let Review = class Review extends sequelize_typescript_1.Model {
-    userId;
-    comment;
-    rating;
-    user;
+const post_1 = require("./post");
+const tag_1 = require("./tag");
+let PostTag = class PostTag extends sequelize_typescript_1.Model {
+    postId;
+    tagId;
 };
 __decorate([
     (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.STRING(50),
+        type: sequelize_typescript_1.DataType.STRING(20),
         allowNull: false,
         primaryKey: true,
     }),
     __metadata("design:type", String)
-], Review.prototype, "id", void 0);
+], PostTag.prototype, "id", void 0);
 __decorate([
-    sequelize_typescript_1.Column,
-    (0, sequelize_typescript_1.ForeignKey)(() => user_1.User),
-    __metadata("design:type", String)
-], Review.prototype, "userId", void 0);
-__decorate([
+    (0, sequelize_typescript_1.ForeignKey)(() => post_1.Post) // foreign key
+    ,
     (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.TEXT,
+        type: sequelize_typescript_1.DataType.STRING(128),
         allowNull: false,
     }),
     __metadata("design:type", String)
-], Review.prototype, "comment", void 0);
+], PostTag.prototype, "postId", void 0);
 __decorate([
+    (0, sequelize_typescript_1.ForeignKey)(() => tag_1.Tag) // foreign key
+    ,
     (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.INTEGER,
+        type: sequelize_typescript_1.DataType.STRING(128),
         allowNull: false,
     }),
-    __metadata("design:type", Number)
-], Review.prototype, "rating", void 0);
-__decorate([
-    (0, sequelize_typescript_1.BelongsTo)(() => user_1.User),
-    __metadata("design:type", user_1.User)
-], Review.prototype, "user", void 0);
-Review = __decorate([
+    __metadata("design:type", String)
+], PostTag.prototype, "tagId", void 0);
+PostTag = __decorate([
     (0, sequelize_typescript_1.Table)({
         timestamps: true,
         paranoid: true,
-        tableName: "review",
-        modelName: "Review"
+        tableName: "postTag",
+        modelName: "PostTag",
     })
-], Review);
-exports.Review = Review;
+], PostTag);
+exports.PostTag = PostTag;

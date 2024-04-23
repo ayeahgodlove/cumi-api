@@ -4,9 +4,6 @@ exports.CategoryRepository = void 0;
 const category_1 = require("../../entities/category");
 const not_found_exception_1 = require("../../../shared/exceptions/not-found.exception");
 class CategoryRepository {
-    /**
-     *
-     */
     constructor() { }
     /**
      * Receives a Category as parameter

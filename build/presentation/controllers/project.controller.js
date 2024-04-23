@@ -1,21 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ReviewsController = void 0;
-const review_1 = require("../../domain/models/review");
-const review_usecase_1 = require("../../domain/usecases/review.usecase");
-const review_repository_1 = require("../../data/repositories/impl/review.repository");
+exports.ProjectsController = void 0;
+const project_1 = require("../../domain/models/project");
+const project_usecase_1 = require("../../domain/usecases/project.usecase");
+const project_repository_1 = require("../../data/repositories/impl/project.repository");
 const mapper_1 = require("../mappers/mapper");
-const review_request_dto_1 = require("../dtos/review-request.dto");
+const project_request_dto_1 = require("../dtos/project-request.dto");
 const class_validator_1 = require("class-validator");
 const displayValidationErrors_1 = require("../../utils/displayValidationErrors");
 const not_found_exception_1 = require("../../shared/exceptions/not-found.exception");
-const reviewRepository = new review_repository_1.ReviewRepository();
-const reviewUseCase = new review_usecase_1.ReviewUseCase(reviewRepository);
-const reviewMapper = new mapper_1.ReviewMapper();
-class ReviewsController {
-    async createReview(req, res) {
-        const dto = new review_request_dto_1.ReviewRequestDto(req.body);
+const util_1 = require("../../utils/util");
+const projectRepository = new project_repository_1.ProjectRepository();
+const projectUseCase = new project_usecase_1.ProjectUseCase(projectRepository);
+const projectMapper = new mapper_1.ProjectMapper();
+class ProjectsController {
+    async createProject(req, res) {
+        const dto = new project_request_dto_1.ProjectRequestDto(req.body);
         const validationErrors = await (0, class_validator_1.validate)(dto);
+        const user = req.user;
         if (validationErrors.length > 0) {
             res.status(400).json({
                 validationErrors: (0, displayValidationErrors_1.displayValidationErrors)(validationErrors),
@@ -26,10 +28,14 @@ class ReviewsController {
         }
         else {
             try {
-                const reviewResponse = await reviewUseCase.createReview(dto.toData());
+                const projectResponse = await projectUseCase.createProject({
+                    ...dto.toData(),
+                    userId: user.id,
+                    imageUrl: req.body.imageUrl,
+                });
                 res.status(201).json({
-                    data: reviewResponse.toJSON(),
-                    message: "Review created Successfully!",
+                    data: projectResponse.toJSON(),
+                    message: "Project created Successfully!",
                     validationErrors: [],
                     success: true,
                 });
@@ -46,14 +52,9 @@ class ReviewsController {
     }
     async getAll(req, res) {
         try {
-            const reviews = await reviewUseCase.getAll();
-            const reviewsDTO = reviewMapper.toDTOs(reviews);
-            res.json({
-                data: reviewsDTO,
-                message: "Success",
-                validationErrors: [],
-                success: true,
-            });
+            const projects = await projectUseCase.getAll();
+            const projectsDTO = projectMapper.toDTOs(projects);
+            res.json(projectsDTO);
         }
         catch (error) {
             res.status(400).json({
@@ -64,20 +65,15 @@ class ReviewsController {
             });
         }
     }
-    async getReviewById(req, res) {
+    async getProjectById(req, res) {
         try {
             const id = req.params.id;
-            const review = await reviewUseCase.getReviewById(id);
-            if (!review) {
-                throw new not_found_exception_1.NotFoundException("Review", id);
+            const project = await projectUseCase.getProjectById(id);
+            if (!project) {
+                throw new not_found_exception_1.NotFoundException("Project", id);
             }
-            const reviewDTO = reviewMapper.toDTO(review);
-            res.json({
-                data: reviewDTO,
-                message: "Success",
-                validationErrors: [],
-                success: true,
-            });
+            const projectDTO = projectMapper.toDTO(project);
+            res.json(projectDTO);
         }
         catch (error) {
             res.status(400).json({
@@ -88,9 +84,10 @@ class ReviewsController {
             });
         }
     }
-    async updateReview(req, res) {
-        const dto = new review_request_dto_1.ReviewRequestDto(req.body);
+    async updateProject(req, res) {
+        const dto = new project_request_dto_1.ProjectRequestDto(req.body);
         const validationErrors = await (0, class_validator_1.validate)(dto);
+        const user = req.user;
         if (validationErrors.length > 0) {
             res.status(400).json({
                 validationErrors: (0, displayValidationErrors_1.displayValidationErrors)(validationErrors),
@@ -102,16 +99,22 @@ class ReviewsController {
         else {
             try {
                 const id = req.params.id;
+                const project = await projectUseCase.getProjectById(id);
+                if (project) {
+                    (0, util_1.deleteFile)(project.dataValues.imageUrl, "projects");
+                }
                 const obj = {
-                    ...review_1.emptyReview,
+                    ...project_1.emptyProject,
                     ...req.body,
                     id: id,
+                    imageUrl: req.body.imageUrl,
+                    userId: user.id,
                 };
-                const updatedReview = await reviewUseCase.updateReview(obj);
-                const reviewDto = reviewMapper.toDTO(updatedReview);
+                const updatedProject = await projectUseCase.updateProject(obj);
+                const projectDto = projectMapper.toDTO(updatedProject);
                 res.json({
-                    data: reviewDto,
-                    message: "Review Updated Successfully!",
+                    data: projectDto,
+                    message: "Project Updated Successfully!",
                     validationErrors: [],
                     success: true,
                 });
@@ -126,10 +129,14 @@ class ReviewsController {
             }
         }
     }
-    async deleteReview(req, res) {
+    async deleteProject(req, res) {
         try {
             const id = req.params.id;
-            await reviewUseCase.deleteReview(id);
+            const project = await projectUseCase.getProjectById(id);
+            if (project) {
+                (0, util_1.deleteFile)(project.dataValues.imageUrl, "projects");
+            }
+            await projectUseCase.deleteProject(id);
             res.status(204).json({
                 message: `Operation successfully completed!`,
                 validationErrors: [],
@@ -147,4 +154,4 @@ class ReviewsController {
         }
     }
 }
-exports.ReviewsController = ReviewsController;
+exports.ProjectsController = ProjectsController;

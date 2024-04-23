@@ -34,7 +34,17 @@ const category_1 = require("../../../data/entities/category");
 const dotenv = __importStar(require("dotenv"));
 const user_1 = require("../../../data/entities/user");
 const role_1 = require("../../../data/entities/role");
-const review_1 = require("../../../data/entities/review");
+const post_1 = require("../../../data/entities/post");
+const document_1 = require("../../../data/entities/document");
+const tag_1 = require("../../../data/entities/tag");
+const comment_1 = require("../../../data/entities/comment");
+const post_tag_1 = require("../../../data/entities/post-tag");
+const document_tag_1 = require("../../../data/entities/document-tag");
+const project_1 = require("../../../data/entities/project");
+const event_1 = require("../../../data/entities/event");
+const service_1 = require("../../../data/entities/service");
+const user_role_1 = require("../../../data/entities/user-role");
+const banner_1 = require("../../../data/entities/banner");
 dotenv.config();
 class PostgresDbConfig {
     _sequelize;
@@ -50,10 +60,20 @@ class PostgresDbConfig {
             host: process.env.HOST,
             dialect: "postgres",
             models: [
-                category_1.Category,
                 user_1.User,
                 role_1.Role,
-                review_1.Review
+                user_role_1.UserRole,
+                category_1.Category,
+                tag_1.Tag,
+                post_1.Post,
+                document_1.DocumentFile,
+                comment_1.Comment,
+                post_tag_1.PostTag,
+                document_tag_1.DocumentTag,
+                project_1.Project,
+                event_1.Event,
+                banner_1.Banner,
+                service_1.Service
             ],
             logging: false,
             pool: {

@@ -37,10 +37,18 @@ const error_middleware_1 = require("./shared/middlewares/error.middleware");
 const not_found_middleware_1 = require("./shared/middlewares/not-found.middleware");
 const category_route_1 = __importDefault(require("./presentation/routes/category.route"));
 const role_route_1 = __importDefault(require("./presentation/routes/role.route"));
-const review_route_1 = __importDefault(require("./presentation/routes/review.route"));
 const auth_route_1 = require("./presentation/routes/auth/auth.route");
 const authz_middleware_1 = __importDefault(require("./shared/middlewares/authz.middleware"));
 const user_route_1 = __importDefault(require("./presentation/routes/user.route"));
+const document_route_1 = __importDefault(require("./presentation/routes/document.route"));
+const comment_route_1 = __importDefault(require("./presentation/routes/comment.route"));
+const tag_route_1 = __importDefault(require("./presentation/routes/tag.route"));
+const post_route_1 = __importDefault(require("./presentation/routes/post.route"));
+const event_route_1 = __importDefault(require("./presentation/routes/event.route"));
+const service_route_1 = __importDefault(require("./presentation/routes/service.route"));
+const project_route_1 = __importDefault(require("./presentation/routes/project.route"));
+const banner_route_1 = __importDefault(require("./presentation/routes/banner.route"));
+const upload_route_1 = __importDefault(require("./presentation/routes/upload.route"));
 dotenv.config();
 /**
  * App Variables
@@ -56,7 +64,6 @@ const app = (0, express_1.default)();
 // Function to serve all static files
 // inside public directory.
 app.use(express_1.default.static('public'));
-// app.use('/uploads/avatars', express.static('avatars'));
 // enable the use of request body parsing middleware
 app
     .use(express_1.default.urlencoded({
@@ -81,6 +88,12 @@ app
     .use(authz_middleware_1.default.session());
 const db = new db_postgres_config_1.PostgresDbConfig();
 db.connection();
+// Custom middleware to add Access-Control-Allow-Origin header
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    // You can add other CORS headers here if needed
+    next();
+});
 // authentication
 app.use("/", auth_route_1.authRoutes);
 // route  endpoints
@@ -92,8 +105,17 @@ app.get("/api", (req, res) => {
 });
 app.use("/api/categories", category_route_1.default);
 app.use("/api/roles", role_route_1.default);
-app.use("/api/reviews", review_route_1.default);
 app.use("/api/users", user_route_1.default);
+app.use("/api/documents", document_route_1.default);
+app.use("/api/comments", comment_route_1.default);
+app.use("/api/tags", tag_route_1.default);
+app.use("/api/posts", post_route_1.default);
+app.use("/api/events", event_route_1.default);
+app.use("/api/services", service_route_1.default);
+app.use("/api/projects", project_route_1.default);
+app.use("/api/banners", banner_route_1.default);
+app.use("/api/banners", banner_route_1.default);
+app.use("/api/uploads", upload_route_1.default);
 // middleware interceptions
 app.use(error_middleware_1.errorHandler);
 app.use(not_found_middleware_1.notFoundHandler);

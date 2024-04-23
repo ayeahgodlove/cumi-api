@@ -3,9 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RoleUseCase = void 0;
 class RoleUseCase {
     roleRepository;
-    /**
-     *
-     */
     constructor(roleRepository) {
         this.roleRepository = roleRepository;
     }
@@ -27,7 +24,6 @@ class RoleUseCase {
     async updateRole(role) {
         const obj = {
             ...role,
-            updatedAt: new Date(),
         };
         return this.roleRepository.update(obj);
     }

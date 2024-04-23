@@ -29,14 +29,11 @@ class CategoryUseCase {
         return this.categoryRepository.findById(id);
     }
     async updateCategory(category) {
-        const { id, name, description, updatedAt, createdAt } = category;
+        const { id, name } = category;
         const obj = {
             id,
             name,
-            slug: (0, slugify_1.default)(name, { lower: true, replacement: "-" }),
-            description,
-            updatedAt,
-            createdAt,
+            slug: (0, slugify_1.default)(name, { lower: true, replacement: "-" })
         };
         return this.categoryRepository.update(obj);
     }

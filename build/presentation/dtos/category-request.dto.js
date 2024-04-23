@@ -20,10 +20,8 @@ const slugify_1 = __importDefault(require("slugify"));
 const nanoid_1 = require("nanoid");
 class CategoryRequestDto {
     name;
-    description;
     constructor(data) {
         this.name = data.name;
-        this.description = data.description;
     }
     toData() {
         return {
@@ -31,7 +29,6 @@ class CategoryRequestDto {
             id: (0, nanoid_1.nanoid)(10),
             slug: (0, slugify_1.default)(this.name, { lower: true, replacement: "-" }),
             name: this.name,
-            description: this.description,
         };
     }
     toUpdateData(data) {
@@ -39,9 +36,6 @@ class CategoryRequestDto {
             id: data.id,
             name: data.name,
             slug: data.slug,
-            description: data.description,
-            createdAt: data.createdAt,
-            updatedAt: data.updatedAt
         };
     }
 }
@@ -51,9 +45,4 @@ __decorate([
     (0, class_validator_1.Length)(4, 25),
     __metadata("design:type", String)
 ], CategoryRequestDto.prototype, "name", void 0);
-__decorate([
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], CategoryRequestDto.prototype, "description", void 0);
 exports.CategoryRequestDto = CategoryRequestDto;

@@ -5,7 +5,4 @@ exports.emptyCategory = {
     id: "",
     name: "",
     slug: "",
-    description: "",
-    createdAt: new Date(),
-    updatedAt: new Date(),
 };

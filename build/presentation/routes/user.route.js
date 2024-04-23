@@ -7,7 +7,8 @@ const is_authenticated_middleware_1 = require("../../shared/middlewares/is-authe
 const multer_config_1 = require("../../shared/helper/multer.config");
 const userController = new user_controller_1.UsersController();
 const userRouter = (0, express_1.Router)();
-userRouter.get("", is_authenticated_middleware_1.isAuthenticatedMiddleware, userController.getAll);
+userRouter.get("", userController.getAll);
+userRouter.get("/:id", userController.getUserById);
 userRouter.get("/me", is_authenticated_middleware_1.isAuthenticatedMiddleware, (req, res) => {
     try {
         const user = req.user;
@@ -26,7 +27,7 @@ userRouter.get("/me", is_authenticated_middleware_1.isAuthenticatedMiddleware, (
     }
 });
 userRouter.post("", userController.createUser);
-userRouter.put("/:id", is_authenticated_middleware_1.isAuthenticatedMiddleware, userController.updateUser);
+userRouter.patch("/:id", is_authenticated_middleware_1.isAuthenticatedMiddleware, userController.updateUser);
 userRouter.delete("/:id", is_authenticated_middleware_1.isAuthenticatedMiddleware, userController.deleteUser);
 // upload user avatar image
 userRouter.post("/upload", is_authenticated_middleware_1.isAuthenticatedMiddleware, multer_config_1.multerInstance.single("avatar"), userController.uploadAvatar);

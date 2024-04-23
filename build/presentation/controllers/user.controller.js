@@ -8,6 +8,7 @@ const mapper_1 = require("../mappers/mapper");
 const user_request_dto_1 = require("../dtos/user-request.dto");
 const class_validator_1 = require("class-validator");
 const displayValidationErrors_1 = require("../../utils/displayValidationErrors");
+const not_found_exception_1 = require("../../shared/exceptions/not-found.exception");
 // import { UnauthorizedException } from "../../shared/exceptions/unauthorized.exception";
 const userRepository = new user_repository_1.UserRepository();
 const userUseCase = new user_usecase_1.UserUseCase(userRepository);
@@ -48,12 +49,7 @@ class UsersController {
         try {
             const users = await userUseCase.getAll();
             const usersDTO = userMapper.toDTOs(users);
-            res.json({
-                data: usersDTO,
-                message: "Success",
-                validationErrors: [],
-                success: true,
-            });
+            res.json(usersDTO);
         }
         catch (error) {
             res.status(400).json({
@@ -100,6 +96,25 @@ class UsersController {
                     success: false,
                 });
             }
+        }
+    }
+    async getUserById(req, res) {
+        try {
+            const id = req.params.id;
+            const user = await userUseCase.getUserById(id);
+            if (!user) {
+                throw new not_found_exception_1.NotFoundException("User", id);
+            }
+            const userDTO = userMapper.toDTO(user);
+            res.json(userDTO);
+        }
+        catch (error) {
+            res.status(400).json({
+                data: null,
+                message: error.message,
+                validationErrors: [error],
+                success: false,
+            });
         }
     }
     async deleteUser(req, res) {
