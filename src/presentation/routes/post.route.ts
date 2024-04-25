@@ -8,8 +8,9 @@ const postController = new PostsController();
 const postRouter = Router();
 
 postRouter.get("", postController.getAll);
-// postRouter.get("/:id", postController.getPostById);
-postRouter.get("/:slug", postController.getPostBySlug);
+postRouter.get("/slugs/:slug", postController.getPostBySlug);
+postRouter.get("/:id", postController.getPostById);
+
 postRouter.post(
   "",
   isAuthenticatedMiddleware,
