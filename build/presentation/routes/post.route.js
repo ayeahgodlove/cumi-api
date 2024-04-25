@@ -7,8 +7,8 @@ const is_authenticated_middleware_1 = require("../../shared/middlewares/is-authe
 const postController = new post_controller_1.PostsController();
 const postRouter = (0, express_1.Router)();
 postRouter.get("", postController.getAll);
-// postRouter.get("/:id", postController.getPostById);
-postRouter.get("/:slug", postController.getPostBySlug);
+postRouter.get("/slugs/:slug", postController.getPostBySlug);
+postRouter.get("/:id", postController.getPostById);
 postRouter.post("", is_authenticated_middleware_1.isAuthenticatedMiddleware, postController.createPost);
 postRouter.patch("/:id", is_authenticated_middleware_1.isAuthenticatedMiddleware, postController.updatePost);
 postRouter.delete("/:id", is_authenticated_middleware_1.isAuthenticatedMiddleware, postController.deletePost);
