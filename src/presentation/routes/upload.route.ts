@@ -39,35 +39,30 @@ uploadRouter.post(
 
 uploadRouter.post(
   "/projects",
-  // isAuthenticatedMiddleware,
   upload("projects").single("imageUrl"),
   uploadController.uploadFile
 );
 
 uploadRouter.post(
   "/posts",
-//   isAuthenticatedMiddleware,
   upload("posts").single("imageUrl"),
   uploadController.uploadFile
 );
 
 uploadRouter.post(
   "/documents",
-  // isAuthenticatedMiddleware,
   upload("documents").single("image"),
   uploadController.uploadFile
 );
 
 uploadRouter.post(
   "/events",
-  // isAuthenticatedMiddleware,
   upload("events").single("imageUrl"),
   uploadController.uploadFile
 );
 
 uploadRouter.post(
   "/services",
-  // isAuthenticatedMiddleware,
   upload("services").single("image"),
   uploadController.uploadFile
 );

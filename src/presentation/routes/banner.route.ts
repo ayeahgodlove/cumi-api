@@ -8,11 +8,7 @@ const bannerController = new BannersController();
 const bannerRouter = Router();
 
 bannerRouter.get("", bannerController.getAll);
-bannerRouter.get(
-  "/:id",
-  isAuthenticatedMiddleware,
-  bannerController.getBannerById
-);
+bannerRouter.get("/:id", bannerController.getBannerById);
 bannerRouter.post("", isAuthenticatedMiddleware, bannerController.createBanner);
 
 bannerRouter.patch(
