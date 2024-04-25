@@ -7,7 +7,7 @@ const is_authenticated_middleware_1 = require("../../shared/middlewares/is-authe
 const bannerController = new banner_controller_1.BannersController();
 const bannerRouter = (0, express_1.Router)();
 bannerRouter.get("", bannerController.getAll);
-bannerRouter.get("/:id", is_authenticated_middleware_1.isAuthenticatedMiddleware, bannerController.getBannerById);
+bannerRouter.get("/:id", bannerController.getBannerById);
 bannerRouter.post("", is_authenticated_middleware_1.isAuthenticatedMiddleware, bannerController.createBanner);
 bannerRouter.patch("/:id", is_authenticated_middleware_1.isAuthenticatedMiddleware, bannerController.updateBanner);
 bannerRouter.delete("/:id", is_authenticated_middleware_1.isAuthenticatedMiddleware, bannerController.deleteBanner);

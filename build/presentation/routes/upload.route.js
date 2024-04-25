@@ -30,19 +30,9 @@ const upload = (folderName) => (0, multer_1.default)({
     limits: { fileSize: 5 * 1024 * 1024 },
 });
 uploadRouter.post("/banners", upload("banners").single("image"), uploadController.uploadFile);
-uploadRouter.post("/projects", 
-// isAuthenticatedMiddleware,
-upload("projects").single("imageUrl"), uploadController.uploadFile);
-uploadRouter.post("/posts", 
-//   isAuthenticatedMiddleware,
-upload("posts").single("imageUrl"), uploadController.uploadFile);
-uploadRouter.post("/documents", 
-// isAuthenticatedMiddleware,
-upload("documents").single("image"), uploadController.uploadFile);
-uploadRouter.post("/events", 
-// isAuthenticatedMiddleware,
-upload("events").single("imageUrl"), uploadController.uploadFile);
-uploadRouter.post("/services", 
-// isAuthenticatedMiddleware,
-upload("services").single("image"), uploadController.uploadFile);
+uploadRouter.post("/projects", upload("projects").single("imageUrl"), uploadController.uploadFile);
+uploadRouter.post("/posts", upload("posts").single("imageUrl"), uploadController.uploadFile);
+uploadRouter.post("/documents", upload("documents").single("image"), uploadController.uploadFile);
+uploadRouter.post("/events", upload("events").single("imageUrl"), uploadController.uploadFile);
+uploadRouter.post("/services", upload("services").single("image"), uploadController.uploadFile);
 exports.default = uploadRouter;
